@@ -74,7 +74,7 @@ def get_top_companies_tx_calculated (start_date: str, end_date: str, top_n: int 
         df = pd.concat([df, temdf])
     
     top_companies = df.groupby(['symbol', 'company_name'])['volume'].sum().reset_index()
-    top_companies = top_companies.sort_values(by=['volume'], ascending=False).head(top_n)
+    top_companies = top_companies.sort_values(by=['volume'], ascending=False).head(top_n).reset_index()
 
     # return retrieve_from_endpoint(url)
     return top_companies
