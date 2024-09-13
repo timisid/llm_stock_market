@@ -10,14 +10,6 @@ from langchain.callbacks import StreamlitCallbackHandler
 from datetime import datetime
 import pandas as pd
 import altair as alt
-
-
-
-# import library for conversational memory
-from langchain.chains import ConversationChain
-from langchain.memory import ConversationBufferMemory
-
-# Import streamlit for app dev
 import streamlit as st
 
 
@@ -190,8 +182,4 @@ if prompt := st.chat_input():
 
         st.session_state['key'] = 'value'
         st.write(result["output"])
-
-
-
         
-
