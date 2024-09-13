@@ -83,7 +83,7 @@ def get_company_by_index(indeks: str) -> str:
     return retrieve_from_endpoint(url)
 
 @tool
-def get_company_by_subsector():
+def get_company_by_subsector() -> str:
     """
     Get sector name groped in subsector
     """
