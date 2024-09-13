@@ -104,14 +104,15 @@ def get_top_company(start_date: str, end_date: str, sub_sector: int = 5) -> str:
 
 
 @tool
-def get_company_ranked(classifications: str, sub_sector:str) -> str:
+def get_company_ranked(classifications: str, sub_sector : str) -> str:
     """
-    sub_sector value by default is "finance"
+    if there is no specified sub sector, then use "banks" as sub_sector default
     classification by default "total_dividend"
     Get top company by total dividend
     Get top company by market cap
     Get top company by revenue
     """
+    sub_sector = sub_sector.lower().replace(' ', '-')
     url = f"https://api.sectors.app/v1/companies/top/?classifications={classifications}&n_stock=5&year=2024&sub_sector={sub_sector}"
 
     return retrieve_from_endpoint(url)
