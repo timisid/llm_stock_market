@@ -174,15 +174,3 @@ if prompt := st.chat_input():
         result = agent_executor.invoke({"input":prompt})        
         # response = agent.run(prompt, callbacks=[st_callback])
         st.write(result["output"])
-
-# query_4 = "Berapa harga saham BBRI tahun 2024?"
-# query_5 = "berapa nilai market cap BMRI terakhir?"
-
-# # # queries = [query_1, query_2, query_3, query_4, query_5]
-# queries = [query_4, query_5]
-
-
-# for query in queries:
-#     print("Question:", query)
-#     result = agent_executor.invoke({"input": query})
-#     print("Answer:", "\n", result["output"], "\n\n======\n\n")
