@@ -83,11 +83,11 @@ def get_company_by_index(indeks: str) -> str:
     return retrieve_from_endpoint(url)
 
 @tool
-def get_company_by_subsector(subsector: str) -> str:
+def get_company_by_subsector():
     """
     Get sector name groped in subsector
     """
-    url = f"https://api.sectors.app/v1/companies/?sub_sector={subsector}"
+    url = f"https://api.sectors.app/v1/subsectors/"
 
     return retrieve_from_endpoint(url)
 
