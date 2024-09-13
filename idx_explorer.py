@@ -140,7 +140,7 @@ if prompt := st.chat_input():
                     explicitly provided (example contains: least, terakhir), get last date of today in current date tools. 
                     Whenever you return a list of names, return also the corresponding values for each name. 
 
-                    strictly  take out column named "rank" in markdown table, prohibited to show
+                    this is important : strictly  take out column named "rank" in markdown table, prohibited to show
             
                     If the volume was about a single day, the start and end parameter should be the same.  
                     if there is a question using over several days, then sum it based on the days given
