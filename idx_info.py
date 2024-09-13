@@ -8,8 +8,6 @@ from langchain_groq import ChatGroq
 from langchain.agents import create_tool_calling_agent, AgentExecutor
 from langchain.callbacks import StreamlitCallbackHandler
 from datetime import datetime
-import pandas as pd
-import altair as alt
 import streamlit as st
 
 
@@ -29,44 +27,46 @@ def retrieve_from_endpoint(url: str) -> dict:
     return json.dumps(data)
 
 @tool
-def get_company_overview(stock: str) -> str:
+def get_company_overview(stock: str, section: str) -> str:
     """
-    Get company by : overview
+    Get company by overview, definition, description, describe
     Get company listed
     Calculated the company listed
-    Harga Saham Terakhir
-    get company address, get description, get history
+    Last Stock price / Harga Saham Terakhir
+    Get company address, get description, get history
     """
     url = f"https://api.sectors.app/v1/company/report/{stock}/?sections=overview"
 
     return retrieve_from_endpoint(url)
 
 @tool
-def get_company_management(stock: str) -> str:
+def get_company_management(stock: str, section: str) -> str:
     """
     Get company by : management
     Get company listed
-    stakeholder of the company
+    stakeholder of the company, ceo and chairman
     """
     url = f"https://api.sectors.app/v1/company/report/{stock}/?sections=management"
 
     return retrieve_from_endpoint(url)
 
-
 @tool
 def get_company_peers(stock: str) -> str:
     """
+    stock value by default is "BBRI"
     Get company by : peers
-    asset value, pe, pb
+    total asset, liabilities, revue, pe, pb, ps
     """
     url = f"https://api.sectors.app/v1/company/report/{stock}/?sections=peers"
 
     return retrieve_from_endpoint(url)
 
 @tool
-def get_company_dividend(stock: str) -> str:
+def get_company_dividend(stock: str, section: str) -> str:
     """
     Get company by : dividend
+    Get highest dividen in 2023 and 2024
+    Top 5 Companies order by largest dividen ascending
     """
     url = f"https://api.sectors.app/v1/company/report/{stock}/?sections=dividend"
 
@@ -75,8 +75,9 @@ def get_company_dividend(stock: str) -> str:
 @tool
 def get_company_by_index(indeks: str) -> str:
     """
-    Get sector
-    get company subsector
+    indeks value by default is "BBRI"
+    Get company name by passing symbol
+    get company index
     """
     url = f"https://api.sectors.app/v1/index/{indeks}/"
 
@@ -85,6 +86,7 @@ def get_company_by_index(indeks: str) -> str:
 @tool
 def get_company_by_subsector() -> str:
     """
+    get company sector
     Get sector name groped in subsector
     """
     url = f"https://api.sectors.app/v1/subsectors/"
@@ -95,13 +97,22 @@ def get_company_by_subsector() -> str:
 @tool
 def get_top_company(start_date: str, end_date: str, sub_sector: int = 5) -> str:
     """
-    Get sector
-    get company subsector
+    top companies by transaction volume
+    traded stock on idx
     """
     url = f"https://api.sectors.app/v1/most-traded/?start={start_date}&end={end_date}&n_stock=5&sub_sector={sub_sector}"
 
     return retrieve_from_endpoint(url)
 
+@tool
+def get_company_by_industry(sub_industry: str) -> str:
+    """
+    Get industry
+    Get company subindustry
+    """
+    url = f"https://api.sectors.app/v1/companies/?sub_industry={sub_industry}"
+
+    return retrieve_from_endpoint(url)
 
 @tool
 def get_company_ranked(classifications: str, sub_sector : str) -> str:
@@ -126,6 +137,7 @@ tools = [
     get_company_by_index, 
     get_company_by_subsector,
     get_top_company, 
+    get_company_by_industry, 
     get_company_ranked
 ]
 
@@ -139,8 +151,8 @@ llm = ChatGroq(
 
 st.image("stock.jpg")
 st.title(":page_facing_up: :green[IDX INFO] ")
+st.markdown("Anything in general info for Indonesian Stock Market (IDX) by using sectors app API")
 st.markdown(":orange[Tools that included are subsector, company report overview, management, peers, dividen and stock price] ")
-st.markdown("Sample question: top 5 by dividen or market cap, how much asset totals of company A vs company B")
 
 if prompt := st.chat_input():
     st.chat_message("user").write(prompt)
@@ -160,7 +172,7 @@ if prompt := st.chat_input():
                     If you need the start and end dates but they are not provided, try this step: 
                     1. get 'date' == start_date == end_date
 
-                    if data was empty try this step: 
+                    if data and date input was empty try this step: 
                     1. get the next date (start_date+1) to proceed in invoke
                     2. if still empty, get the next another date (start_date+2) to proceed in invoke
                     3. return the result by writing the invoke result. also write the start_date that proceed
@@ -183,4 +195,8 @@ if prompt := st.chat_input():
 
         st.session_state['key'] = 'value'
         st.write(result["output"])
+
+
+
         
+
