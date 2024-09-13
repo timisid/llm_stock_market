@@ -37,7 +37,7 @@ def retrieve_from_endpoint(url: str) -> dict:
     return json.dumps(data)
 
 @tool
-def get_company_overview(stock: str, section: str) -> str:
+def get_company_overview(stock: str) -> str:
     """
     Get company by : overview
     Get company listed
@@ -50,7 +50,7 @@ def get_company_overview(stock: str, section: str) -> str:
     return retrieve_from_endpoint(url)
 
 @tool
-def get_company_management(stock: str, section: str) -> str:
+def get_company_management(stock: str) -> str:
     """
     Get company by : management
     Get company listed
@@ -62,7 +62,7 @@ def get_company_management(stock: str, section: str) -> str:
 
 
 @tool
-def get_company_peers(stock: str, section: str) -> str:
+def get_company_peers(stock: str) -> str:
     """
     Get company by : peers
     asset value, pe, pb
@@ -72,7 +72,7 @@ def get_company_peers(stock: str, section: str) -> str:
     return retrieve_from_endpoint(url)
 
 @tool
-def get_company_dividend(stock: str, section: str) -> str:
+def get_company_dividend(stock: str) -> str:
     """
     Get company by : dividend
     """
@@ -111,6 +111,19 @@ def get_top_company(start_date: str, end_date: str, sub_sector: int = 5) -> str:
     return retrieve_from_endpoint(url)
 
 
+@tool
+def get_company_ranked(classifications: str, sub_sector:str) -> str:
+    """
+    sub_sector value by default is "finance"
+    classification by default "total_dividend"
+    Get top company by total dividend
+    Get top company by market cap
+    Get top company by revenue
+    """
+    url = f"https://api.sectors.app/v1/companies/top/?classifications={classifications}&n_stock=5&year=2024&sub_sector={sub_sector}"
+
+    return retrieve_from_endpoint(url)
+
  
 tools = [
     get_company_overview,
@@ -119,7 +132,8 @@ tools = [
     get_company_dividend,
     get_company_by_index, 
     get_company_by_subsector,
-    get_top_company
+    get_top_company, 
+    get_company_ranked
 ]
 
 llm = ChatGroq(
