@@ -139,8 +139,8 @@ llm = ChatGroq(
 
 st.image("stock.jpg")
 st.title(":page_facing_up: :green[IDX INFO] ")
-st.markdown("Anything in general info for Indonesian Stock Market (IDX) by using sectors app API")
 st.markdown(":orange[Tools that included are subsector, company report overview, management, peers, dividen and stock price] ")
+st.markdown("Sample question: top 5 by dividen or market cap, how much asset totals of company A vs company B")
 
 if prompt := st.chat_input():
     st.chat_message("user").write(prompt)
